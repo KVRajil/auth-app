@@ -12,7 +12,7 @@ RSpec.describe 'User::TwoFactorAuthentication', type: :request do
     context 'Valid scenarios' do
       it 'should generate OTP' do
         token = JwtService.encode({ user_id: user.id })
-        headers['Authorization'] = "Bearer #{token}"
+        header 'Authorization', "Bearer #{token}"
         post('/users/generate_otp', headers: headers)
 
         expect(last_response.status).to eq(200)
@@ -25,7 +25,7 @@ RSpec.describe 'User::TwoFactorAuthentication', type: :request do
     context 'Valid scenarios' do
       it 'should return success on OTP verification' do
         token = JwtService.encode({ user_id: user.id })
-        headers['Authorization'] = "Bearer #{token}"
+        header 'Authorization', "Bearer #{token}"
         params = { otp: OtpService.new(user).generate }
         post('/users/verify_otp', headers: headers, params: params.to_json)
 
@@ -44,7 +44,7 @@ RSpec.describe 'User::TwoFactorAuthentication', type: :request do
 
       it 'returns invalid otp error' do
         token = JwtService.encode({ user_id: user.id })
-        headers['Authorization'] = "Bearer #{token}"
+        header 'Authorization', "Bearer #{token}"
         params = { otp: 'wrong otp' }
         post('/users/verify_otp', headers: headers, params: params.to_json)
         expect(last_response.status).to eq(401)
@@ -57,7 +57,7 @@ RSpec.describe 'User::TwoFactorAuthentication', type: :request do
     context 'Valid scenarios' do
       it 'should disable the 2fa' do
         token = JwtService.encode({ user_id: user.id, otp_verified: true })
-        headers['Authorization'] = "Bearer #{token}"
+        header 'Authorization', "Bearer #{token}"
         params = { otp: OtpService.new(user).generate, current_password: 'Test@123', enable_2fa: false }
         patch('/users/toggle_2fa', headers: headers, params: params.to_json)
 
@@ -68,7 +68,7 @@ RSpec.describe 'User::TwoFactorAuthentication', type: :request do
       it 'should enable the 2fa' do
         user.update!(is_two_factor_enabled: false)
         token = JwtService.encode({ user_id: user.id, otp_verified: true })
-        headers['Authorization'] = "Bearer #{token}"
+        header 'Authorization', "Bearer #{token}"
         params = { otp: OtpService.new(user).generate, current_password: 'Test@123', enable_2fa: true }
         patch('/users/toggle_2fa', headers: headers, params: params.to_json)
 
@@ -81,7 +81,7 @@ RSpec.describe 'User::TwoFactorAuthentication', type: :request do
     context 'Invalid scenarios' do
       it 'should should fail to update the 2fa & return Invalid password' do
         token = JwtService.encode({ user_id: user.id, otp_verified: true })
-        headers['Authorization'] = "Bearer #{token}"
+        header 'Authorization', "Bearer #{token}"
         params = { otp: OtpService.new(user).generate, password: 'Test@123Wrong', enable_2fa: false }
         patch('/users/toggle_2fa', headers: headers, params: params.to_json)
 
@@ -90,7 +90,7 @@ RSpec.describe 'User::TwoFactorAuthentication', type: :request do
       end
       it 'should should fail to update the 2fa & return Invalid OTP' do
         token = JwtService.encode({ user_id: user.id, otp_verified: true })
-        headers['Authorization'] = "Bearer #{token}"
+        header 'Authorization', "Bearer #{token}"
         params = { otp: 'wrong', password: 'Test@123', enable_2fa: false }
         patch('/users/toggle_2fa', headers: headers, params: params.to_json)
 

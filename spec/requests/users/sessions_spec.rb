@@ -32,7 +32,7 @@ RSpec.describe 'User::Session', type: :request do
     context 'Valid scenarios' do
       it 'should logout and generate a revoked jwt token' do
         token = JwtService.encode({ user_id: user.id })
-        headers['Authorization'] = "Bearer #{token}"
+        header 'Authorization', "Bearer #{token}"
         delete('/users/logout', headers: headers)
 
         expect(last_response.status).to eq(200)
@@ -43,7 +43,7 @@ RSpec.describe 'User::Session', type: :request do
     context 'Invalid scenarios' do
       it 'should fail to logout' do
         token = 'Invalid token'
-        headers['Authorization'] = "Bearer #{token}"
+        header 'Authorization', "Bearer #{token}"
         delete('/users/logout', headers: headers)
 
         expect(last_response.status).to eq(401)

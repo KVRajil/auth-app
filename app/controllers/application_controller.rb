@@ -36,7 +36,7 @@ class ApplicationController < AuthApp
   end
 
   def auth_token
-    request.env['rack.request.form_hash']['headers']['Authorization']&.split(' ')&.last
+    request.env['HTTP_AUTHORIZATION']&.split(' ')&.last
   end
 
   def body_params

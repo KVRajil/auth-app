@@ -13,7 +13,7 @@ RSpec.describe 'User::Confirmation', type: :request do
       it 'updates the password' do
         token = JwtService.encode({ user_id: user.id, otp_verified: true })
         otp   = OtpService.new(user).generate
-        headers['Authorization'] = "Bearer #{token}"
+        header 'Authorization', "Bearer #{token}"
         params = { current_password: 'Test@123', new_password: 'TestNew@123', otp: otp }
         patch('/users/passwords', headers: headers, params: params.to_json)
         expect(last_response.status).to eq(200)
@@ -38,7 +38,7 @@ RSpec.describe 'User::Confirmation', type: :request do
 
       it 'returns error status when the OTP is wrong' do
         token = JwtService.encode({ user_id: user.id, otp_verified: true })
-        headers['Authorization'] = "Bearer #{token}"
+        header 'Authorization', "Bearer #{token}"
         params = { current_password: 'Test@123', new_password: 'TestNew@123', otp: 'wrong' }
         patch('/users/passwords', headers: headers, params: params.to_json)
         expect(last_response.status).to eq(422)
