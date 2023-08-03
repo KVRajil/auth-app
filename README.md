@@ -22,7 +22,7 @@ Installation & Setup:
     Clone the project & cd to root path.
     Copy .env.example to .env and replace env sample values with the actual values
     Db setup - RACK_ENV=development rake db:create & rake db:migrate
-    Start the Rails server using rackup -p 3000 .
+    Start the Sinatra app using rackup -p 3000 .
     Run the RSpec tests with rspec spec/ (RACK_ENV=test rake db:create & rake db:migrate).
 
 App Workflow:
