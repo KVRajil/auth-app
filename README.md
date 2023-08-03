@@ -39,7 +39,7 @@ App Workflow:
     Note - OTP will be send through the registered email id & OTP valid only for 90 seconds.
 
 
-Security Best Practices:
+Security Best Practices(TODO):
 
     Use Secret Management System.
     Periodic Key Rotation.
