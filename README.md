@@ -101,7 +101,7 @@ CURL Requests
    --header 'Content-Type: application/json' \
    --header 'Accept: application/json' \
    --header 'Authorization: Bearer Token' \
-   --data-raw '{"password": "Test@1234", "otp": "544608", "enable_2fa": false}'
+   --data-raw '{"current_password": "Test@1234", "otp": "544608", "enable_2fa": false}'
 
 8. Update Password
    ```bash
