@@ -1,6 +1,4 @@
 require_relative 'config/environment'
-# use Rack::MethodOverride
-# use Rack::JSONBodyParser
 use Rack::Attack
 map '/users' do
   use Users::RegistrationsController
