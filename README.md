@@ -10,8 +10,11 @@ Features
 4. Throttling and rate limiting using rack-attack
 
 
-Ruby    version - 3.2.2
+Ruby version - 3.2.2
+
 Sinatra version - 3.0.6
+
+
 
 
 Installation & Setup:
