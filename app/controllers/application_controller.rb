@@ -45,8 +45,8 @@ class ApplicationController < AuthApp
 
   def request_body
     request.body.rewind
-    decoded_body = Rack::Utils.parse_nested_query(request.body.read)['params']
-    return JSON.parse(decoded_body)&.with_indifferent_access if decoded_body
+    body = request.body.read
+    return JSON.parse(body)&.with_indifferent_access if body.present?
 
     {}
   end

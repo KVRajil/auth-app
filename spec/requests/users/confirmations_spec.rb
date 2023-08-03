@@ -7,7 +7,7 @@ RSpec.describe 'User::Confirmation', type: :request do
   describe 'GET #show' do
     context 'Valid scenarios' do
       it 'confirms the email' do
-        get("/users/confirmations/#{user.confirmation_token}", headers: headers)
+        get("/users/confirmations/#{user.confirmation_token}", {}.to_json, headers)
         expect(last_response.status).to eq(200)
         expect(user.reload.email_confirmed_at).to be_present
         expect(user.reload.confirmation_token).to be_nil
@@ -18,7 +18,7 @@ RSpec.describe 'User::Confirmation', type: :request do
     context 'Invalid scenarios' do
       it 'returns an error response' do
         token = 'invalid_token'
-        get("/users/confirmations/#{token}", headers: headers)
+        get("/users/confirmations/#{token}", headers)
         expect(last_response.status).to eq(422)
         expect(json_response['error']).to eq('Invalid confirmation link')
       end
@@ -29,7 +29,7 @@ RSpec.describe 'User::Confirmation', type: :request do
     context 'Valid scenarios' do
       it 'resends the email confirmation' do
         params = { email: 'test@gmail.com', password: 'Test@123' }
-        post('/users/confirmations', headers: headers, params: params.to_json)
+        post('/users/confirmations',params.to_json , headers)
 
         expect(last_response.status).to eq(200)
         expect(json_response['message']).to eq('Confirmation email sent.')
@@ -39,7 +39,7 @@ RSpec.describe 'User::Confirmation', type: :request do
     context 'Invalid scenarios' do
       it 'returns an error response' do
         params = { email: 'test@gmail.com', password: 'wrong password' }
-        post('/users/confirmations', headers: headers, params: params.to_json)
+        post('/users/confirmations',params.to_json , headers)
         expect(last_response.status).to eq(401)
         expect(json_response['error']).to eq('Invalid email id or password')
       end
